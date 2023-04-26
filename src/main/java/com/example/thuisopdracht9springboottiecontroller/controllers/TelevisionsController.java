@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("tvs")
+@RequestMapping("/televisions")
 public class TelevisionsController {
 //    Variables
-    private List<String> tvs = new ArrayList<>();
+//    private List<String> tvs = new ArrayList<>();
     private List<String> televisionDataBase = new ArrayList<>();
 
 
@@ -20,31 +20,34 @@ public class TelevisionsController {
 //    Gets
     @GetMapping
     public ResponseEntity<List<String>> getTvs(){
-        return new ResponseEntity<>(tvs, HttpStatus.OK) ;
+        return new ResponseEntity<>(televisionDataBase, HttpStatus.OK) ;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<String> getTv(@PathVariable int id){
-        String tvFound = tvs.get(id);
+        String tvFound = televisionDataBase.get(id);
         return new ResponseEntity<>(tvFound, HttpStatus.OK);
     }
 
 //    Posts
     @PostMapping
-    public void addTv(@RequestParam String tv){
-        tvs.add(tv);
+    public ResponseEntity<String> addTv(@RequestParam String tv){
+        televisionDataBase.add(tv);
+        return new ResponseEntity<>(tv,HttpStatus.CREATED);
     }
 
 //    Puts
     @PutMapping("/{id}")
-    public void updateTv(@PathVariable int id, @RequestBody String tvTitle){
-        tvs.set(id+1, tvTitle);
+    public ResponseEntity<String> updateTv(@PathVariable int id, @RequestBody String tvTitle){
+        televisionDataBase.set(id, tvTitle);
+        return new ResponseEntity<>(tvTitle, HttpStatus.NO_CONTENT);
     }
 
 //    Deletes
     @DeleteMapping("/{id}")
-    public void deleleteTv(@PathVariable int id){
-        tvs.remove(id+1);
+    public ResponseEntity<HttpStatus> deleleteTv(@PathVariable int id){
+        televisionDataBase.remove(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
