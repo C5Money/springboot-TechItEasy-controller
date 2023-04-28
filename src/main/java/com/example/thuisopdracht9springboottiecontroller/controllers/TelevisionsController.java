@@ -9,47 +9,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/televisions")
+@RequestMapping("/tvs")
 public class TelevisionsController {
 //    Variables
-//    private List<String> tvs = new ArrayList<>();
     private List<String> televisionDataBase = new ArrayList<>();
-
 
 //    Requests:
 //    Gets
     @GetMapping
-    public ResponseEntity<List<String>> getTvs(){
-        return new ResponseEntity<>(televisionDataBase, HttpStatus.OK) ;
+    public ResponseEntity<List<String>> readTvs(){
+        return ResponseEntity.ok(televisionDataBase);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getTv(@PathVariable int id){
-        String tvFound = televisionDataBase.get(id);
-        return new ResponseEntity<>(tvFound, HttpStatus.OK);
+    public ResponseEntity<String> readOneTv(@PathVariable int id){
+        return ResponseEntity.ok(televisionDataBase.get(id));
     }
 
 //    Posts
     @PostMapping
-    public ResponseEntity<String> addTv(@RequestParam String tv){
+    public ResponseEntity<String> createTv(@RequestBody String tv){
         televisionDataBase.add(tv);
-        return new ResponseEntity<>(tv,HttpStatus.CREATED);
+        return ResponseEntity.created(null).body(tv);
     }
 
 //    Puts
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateTv(@PathVariable int id, @RequestBody String tvTitle){
-        televisionDataBase.set(id, tvTitle);
-        return new ResponseEntity<>(tvTitle, HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> updateTv(@PathVariable int id, @RequestBody String tvData){
+        televisionDataBase.set(id, tvData);
+        return ResponseEntity.accepted().body(id + " " + tvData);
     }
 
 //    Deletes
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleleteTv(@PathVariable int id){
+    public ResponseEntity<Object> deleleteTv(@PathVariable int id){
         televisionDataBase.remove(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
-
-
-
 }
